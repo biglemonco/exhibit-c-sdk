@@ -1,94 +1,74 @@
+# Exhibit C SDK (beta)
 
+This mono repo contains many of the SDKs available for use with the [Exhibit C](https://www.exhibit-c.co.uk/) platform.
 
-# ExhibitCSdk
+[![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
 
-This project was generated using [Nx](https://nx.dev).
+## Documentation
 
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="450"></p>
+## Getting started
 
-🔎 **Smart, Fast and Extensible Build System**
+This SDK makes it easy to get working with the exhibit-c platform and allows you to log your activities.
 
-## Adding capabilities to your workspace
+### Requesting an invite
 
-Nx supports many plugins which add capabilities for developing different types of applications and different tools.
+Before using the SDK, you must request an API key from your account. You can do that by visiting [app.exhibit-c.co.uk/organisation/developer](https://app.exhibit-c.co.uk/organisation/developer).
+Once you have been approved, you can then start interacting with the SDK.
 
-These capabilities include generating applications, libraries, etc as well as the devtools to test, and build projects as well.
+### Installing the SDK
 
-Below are our core plugins:
+```
+yarn add @biglemonco/exhibit-c-sdk
+```
 
-- [React](https://reactjs.org)
-  - `npm install --save-dev @nrwl/react`
-- Web (no framework frontends)
-  - `npm install --save-dev @nrwl/web`
-- [Angular](https://angular.io)
-  - `npm install --save-dev @nrwl/angular`
-- [Nest](https://nestjs.com)
-  - `npm install --save-dev @nrwl/nest`
-- [Express](https://expressjs.com)
-  - `npm install --save-dev @nrwl/express`
-- [Node](https://nodejs.org)
-  - `npm install --save-dev @nrwl/node`
+## How to use
 
-There are also many [community plugins](https://nx.dev/community) you could add.
+Once you have your API key, you can then start using the Exhibit-C SDK as follows.
 
-## Generate an application
+## Initalise the SDK
 
-Run `nx g @nrwl/react:app my-app` to generate an application.
+```ts
+const client = new EC({apiKey:<YOUR_KEY>});
 
-> You can use any of the plugins above to generate applications as well.
+```
 
-When using Nx, you can create multiple applications and libraries in the same workspace.
+## Get Activity by ID
 
-## Generate a library
+To find out what inputs you need to provide the `createLog` method, you can use `getActivity` method
 
-Run `nx g @nrwl/react:lib my-lib` to generate a library.
+```ts
+const activity = await client.getActivity('123');
+```
 
-> You can also use any of the plugins above to generate libraries as well.
+## Get Activity by REF
 
-Libraries are shareable across libraries and applications. They can be imported from `@exhibit-c-sdk/mylib`.
+During your account onboarding, we may have mapped the acitvity to an internal id you already use. If you would prefer to use that Id to find the activity, you can use the `getActivityByRef` method.
 
-## Development server
+```ts
+const activity = await client.getActivityByRef('123');
+```
 
-Run `nx serve my-app` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
+## Creating a log
 
-## Code scaffolding
+When creating a log, you must provide us with the activity id and correctly tell us the inputs for that activity.
 
-Run `nx g @nrwl/react:component my-component --project=my-app` to generate a new component.
+```ts
+const activity = await client.getActivity('123');
 
-## Build
+const { inputs, id } = activity;
 
-Run `nx build my-app` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+// Use the inputs array to validate you are providing all the requried data
 
-## Running unit tests
+const log = await client.createLog({
+  startDate: '2020-01-01T00:00:00.000Z',
+  endDate: '2020-01-01T00:00:00.000Z',
+  activityId: id,
+  inputs: {
+    Tr: 1003,
+  },
+});
+```
 
-Run `nx test my-app` to execute the unit tests via [Jest](https://jestjs.io).
+## Authors
 
-Run `nx affected:test` to execute the unit tests affected by a change.
-
-## Running end-to-end tests
-
-Run `nx e2e my-app` to execute the end-to-end tests via [Cypress](https://www.cypress.io).
-
-Run `nx affected:e2e` to execute the end-to-end tests affected by a change.
-
-## Understand your workspace
-
-Run `nx graph` to see a diagram of the dependencies of your projects.
-
-## Further help
-
-Visit the [Nx Documentation](https://nx.dev) to learn more.
-
-
-
-## ☁ Nx Cloud
-
-### Distributed Computation Caching & Distributed Task Execution
-
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-cloud-card.png"></p>
-
-Nx Cloud pairs with Nx in order to enable you to build and test code more rapidly, by up to 10 times. Even teams that are new to Nx can connect to Nx Cloud and start saving time instantly.
-
-Teams using Nx gain the advantage of building full-stack applications with their preferred framework alongside Nx’s advanced code generation and project dependency graph, plus a unified experience for both frontend and backend developers.
-
-Visit [Nx Cloud](https://nx.app/) to learn more.
+- [@mikerudge](https://www.github.com/mikerudge)

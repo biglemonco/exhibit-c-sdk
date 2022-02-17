@@ -2,7 +2,6 @@ import axios, { AxiosInstance } from 'axios';
 
 type ECParams = {
   apiKey: string;
-  authDomain: string;
 };
 
 export type Maybe<T> = T | null;

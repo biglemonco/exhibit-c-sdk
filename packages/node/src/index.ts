@@ -1,3 +1,3 @@
-import { node } from './app/node';
+import { EC } from './app/node';
 
-console.log(`Running ${node()}`);
+const client = new EC({ apiKey: '123-456-789' });
